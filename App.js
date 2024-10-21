@@ -1,22 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import {Image, StyleSheet, Text, Alert, View} from 'react-native';
-
-import {
-    magnetometer,
-    setUpdateIntervalForType,
-    SensorTypes,
-} from 'react-native-sensors';
-
+import {Alert, Image, LogBox, StyleSheet, Text, View} from 'react-native';
+import {magnetometer, SensorTypes, setUpdateIntervalForType,} from 'react-native-sensors';
 import LPF from 'lpf';
 import RNExitApp from 'react-native-exit-app';
-import {LogBox} from 'react-native';
 
 export default function App() {
     LogBox.ignoreLogs(['new NativeEventEmitter']);
     LPF.init([]);
     LPF.smoothing = 0.1;
 
-    const [magnometerState, setMagnometerState] = useState('0');
+    const [magnetometerState, setMagnetometerState] = useState('0');
     const [subscription, setSubscription] = useState(null);
 
     function angler(magnetometer_y) {
@@ -37,7 +30,7 @@ export default function App() {
         setUpdateIntervalForType(SensorTypes.magnetometer, 15);
         setSubscription(
             magnetometer.subscribe((sensorData, error) => {
-                setMagnometerState(angler(sensorData));
+                setMagnetometerState(angler(sensorData));
                 console.log(
                     'Data were delivered at ' +
                     new Date(sensorData.timestamp).toLocaleString(),
@@ -85,12 +78,12 @@ export default function App() {
                     style={{
                         width: 340,
                         height: 340,
-                        transform: [{rotate: 360 - magnometerState + 'deg'}],
+                        transform: [{rotate: 360 - magnetometerState + 'deg'}],
                     }}
                     source={require("./assets/compass.png")}
                 />
 
-                <Text style={styles.degreeText}>{degree(magnometerState) + '°'}</Text>
+                <Text style={styles.degreeText}>{degree(magnetometerState) + '°'}</Text>
             </View>
         </View>
     );
